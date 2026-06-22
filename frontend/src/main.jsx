@@ -6,6 +6,7 @@ import './index.css';
 
 // Calibrate Axios dynamically for Vercel deployment, unified hosting, or proxy routing
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL || (import.meta.env.DEV ? '' : 'https://funny-icons-lead.loca.lt');
+axios.defaults.headers.common['bypass-tunnel-reminder'] = 'true';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
