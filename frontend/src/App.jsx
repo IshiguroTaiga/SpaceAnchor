@@ -547,7 +547,7 @@ export default function App() {
               <input 
                 type="email" 
                 className="form-control" 
-                placeholder="herta@spaceanchor.io"
+                placeholder="test@gmail.com"
                 value={loginEmail}
                 onChange={(e) => setLoginEmail(e.target.value)}
                 required
