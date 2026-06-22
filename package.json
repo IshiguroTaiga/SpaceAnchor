@@ -7,7 +7,7 @@
     "backend": "cd backend && npm start",
     "frontend": "cd frontend && npm run dev",
     "dev": "npx concurrently \"npm run backend\" \"npm run frontend\"",
-    "tunnel": "npx localtunnel --port 4040"
+    "tunnel": "npx localtunnel --port 4040 --subdomain herta-spaceanchor"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
