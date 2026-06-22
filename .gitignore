@@ -1,0 +1,26 @@
+# Dependency modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Database instances (prevent locking/uploading local logs)
+backend/database.sqlite
+backend/database.sqlite-journal
+
+# Compiled frontend output
+frontend/dist/
+
+# Local environmental variables
+backend/.env
+
+# Editor / OS files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+.DS_Store
+Thumbs.db

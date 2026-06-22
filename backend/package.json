@@ -1,0 +1,19 @@
+{
+  "name": "space-anchor-backend",
+  "version": "1.0.0",
+  "description": "SpaceAnchor Backend - Honkai: Star Rail Themed Link Shortener and Analytics Node",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "seed": "node seed_demo.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^12.11.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^6.9.13"
+  }
+}
