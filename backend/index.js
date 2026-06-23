@@ -1011,7 +1011,11 @@ app.get('*splat', (req, res, next) => {
 });
 
 // Start Server
-app.listen(PORT, () => {
-  console.log(`🚀 SpaceAnchor core station running on port ${PORT}`);
-  console.log(`🌐 Routing anchors and clicking stats registered.`);
-});
+if (require.main === module && !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`🚀 SpaceAnchor core station running on port ${PORT}`);
+    console.log(`🌐 Routing anchors and clicking stats registered.`);
+  });
+}
+
+module.exports = app;

@@ -1,0 +1,49 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "backend/index.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["backend/init.sql"]
+      }
+    },
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "backend/index.js"
+    },
+    {
+      "src": "/decrypt/(.*)",
+      "dest": "backend/index.js"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "frontend/assets/$1"
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "frontend/favicon.ico"
+    },
+    {
+      "src": "/",
+      "dest": "frontend/index.html"
+    },
+    {
+      "src": "/index.html",
+      "dest": "frontend/index.html"
+    },
+    {
+      "src": "/([^/]+)",
+      "dest": "backend/index.js"
+    }
+  ]
+}

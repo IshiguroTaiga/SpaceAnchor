@@ -2,8 +2,11 @@ const Database = require('better-sqlite3');
 const fs = require('fs');
 const path = require('path');
 
-// Prevent Windows file locking issues in Docker, otherwise write to current directory
-const dbDir = process.env.NODE_ENV === 'docker' ? '/data' : __dirname;
+// Prevent Windows file locking issues in Docker, write to /tmp on Vercel, otherwise write to current directory
+const dbDir = process.env.VERCEL 
+  ? '/tmp' 
+  : (process.env.NODE_ENV === 'docker' ? '/data' : __dirname);
+
 if (!fs.existsSync(dbDir)) {
   fs.mkdirSync(dbDir, { recursive: true });
 }
@@ -33,13 +36,16 @@ const query = (text, params = []) => {
 };
 
 const initDb = () => {
-  const sqlFile = path.resolve(__dirname, 'init.sql');
+  const sqlFile = process.env.VERCEL 
+    ? path.join(process.cwd(), 'backend/init.sql') 
+    : path.resolve(__dirname, 'init.sql');
+  
   if (fs.existsSync(sqlFile)) {
     const sql = fs.readFileSync(sqlFile, 'utf8');
     db.exec(sql);
     console.log('✅ SQLite Database Initialized via better-sqlite3 (SpaceAnchor)');
   } else {
-    console.error('❌ init.sql schema file not found!');
+    console.error(`❌ init.sql schema file not found at: ${sqlFile}`);
   }
 };
 
