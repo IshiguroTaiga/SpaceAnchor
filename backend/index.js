@@ -72,7 +72,8 @@ const requireAdmin = (req, res, next) => {
 };
 
 // Auto-seed user if database is empty on start
-(async () => {
+let dbInitialized = false;
+const dbInitializationPromise = (async () => {
   try {
     const { rows } = await query('SELECT COUNT(*) as count FROM users');
     if (rows[0].count === 0) {
@@ -80,10 +81,19 @@ const requireAdmin = (req, res, next) => {
       const seedFunc = require('./seed_demo');
       await seedFunc();
     }
+    dbInitialized = true;
   } catch (err) {
     console.error('Failed to run auto-seed:', err.message);
   }
 })();
+
+// Middleware to block incoming requests until database seeding is complete
+app.use(async (req, res, next) => {
+  if (!dbInitialized) {
+    await dbInitializationPromise;
+  }
+  next();
+});
 
 // ==========================================
 // 1. PUBLIC LINK REDIRECTION ENGINE (ROOT)
@@ -102,13 +112,27 @@ app.post('/decrypt/:shortId', async (req, res) => {
     const domainId = domRows.length > 0 ? domRows[0].id : 1; // Fallback to 1
 
     // 2. Find link
-    const { rows: linkRows } = await query(
+    let { rows: linkRows } = await query(
       `SELECT l.*, d.domain_name 
        FROM links l
        JOIN domains d ON l.domain_id = d.id
        WHERE l.short_id = ? AND (l.domain_id = ? OR l.domain_id = 1)`,
       [shortId, domainId]
     );
+
+    if (linkRows.length === 0) {
+      // Fallback: search for the short_id across ANY domain
+      const { rows: fallbackRows } = await query(
+        `SELECT l.*, d.domain_name 
+         FROM links l
+         JOIN domains d ON l.domain_id = d.id
+         WHERE l.short_id = ?`,
+        [shortId]
+      );
+      if (fallbackRows.length > 0) {
+        linkRows = fallbackRows;
+      }
+    }
 
     if (linkRows.length === 0) {
       return res.status(404).send('<h1>404 Space Anchor Not Found</h1><p>The coordinate does not exist in the Simulated Universe.</p>');
@@ -175,7 +199,7 @@ app.get('/:shortId', async (req, res) => {
     }
 
     // 2. Find matching link
-    const { rows: linkRows } = await query(
+    let { rows: linkRows } = await query(
       `SELECT l.*, d.domain_name 
        FROM links l
        JOIN domains d ON l.domain_id = d.id
@@ -183,6 +207,21 @@ app.get('/:shortId', async (req, res) => {
        ORDER BY (l.domain_id = ?) DESC LIMIT 1`,
       [shortId, domainId, domainId]
     );
+
+    if (linkRows.length === 0) {
+      // Fallback: search for the short_id across ANY domain
+      const { rows: fallbackRows } = await query(
+        `SELECT l.*, d.domain_name 
+         FROM links l
+         JOIN domains d ON l.domain_id = d.id
+         WHERE l.short_id = ? 
+         LIMIT 1`,
+        [shortId]
+      );
+      if (fallbackRows.length > 0) {
+        linkRows = fallbackRows;
+      }
+    }
 
     if (linkRows.length === 0) {
       return res.status(404).send(`
