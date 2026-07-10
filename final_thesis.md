@@ -1,8 +1,12 @@
-# Proposed Thesis Ideas
+# Proposed BSCS Thesis Ideas
+
+This document outlines the proposed Bachelor of Science in Computer Science (BSCS) thesis topics. Each topic is structured to emphasize its computing core, alignment with the curriculum, and social impact.
+
+---
 
 ### 1. MMSU LinkCast (URL Shortener)
 * **TITLE:** MMSU LinkCast: A Secure Institutional URL Shortener with Real-Time Heuristic Phishing Detection and Asynchronous Telemetry Ingestion
-* **PROBLEM STATEMENT:** Faculty and students frequently share long registration links, grade portals, and surveys using public URL shorteners (e.g., bit.ly, tinyurl.com). These external links look unprofessional, obscure the true destination, and can easily be exploited by malicious actors to mask phishing sites designed to harvest university credentials.
+* **PROBLEM STATEMENT:** Faculty and students frequently share long registration links, grade portals, and surveys using public URL shorteners (e.g., `bit.ly`, `tinyurl.com`). These external links look unprofessional, obscure the true destination, and can easily be exploited by malicious actors to mask phishing sites designed to harvest university credentials.
 * **OBJECTIVE:** To design and implement a secure, university-branded URL shortening platform that actively scans destination URLs for phishing indicators and gathers real-time visitor analytics without introducing latency to the redirection process.
 * **METHODOLOGY OR HOW TO SOLVE THE PROBLEM:**
     * **Heuristic Detection Engine:** Program an inline scanning module that screens destination links against malicious patterns, checking for homograph attacks (character substitutions in domains) and lookalike keywords.
@@ -119,3 +123,16 @@
     * **Structural Winnowing & Fingerprinting:** Implement fingerprinting algorithms on the compiled syntax trees. Use Locality-Sensitive Hashing (LSH) to index and cluster code signatures, enabling rapid similarity checks across large project repositories.
 * **SGD COVERED:** SDG 4: Quality Education (Sub-target: Promoting Research Excellence, Code Authenticity, and Academic Standards).
 * **EXPECTED OUTPUT:** An institutional repository platform with automated zip archive extractions, a tree-based logic similarity scanner, and a visual dashboard that maps identical code structures for instructors.
+
+---
+
+### 11. MMSU Knowledge Hub (Unified Academic Portal & Pathfinder)
+* **TITLE:** MMSU Knowledge Hub: An Integrated Multi-Campus Academic Information System with Graph-Theoretic Pathfinding and Semantic Policy Retrieval
+* **PROBLEM STATEMENT:** The official MMSU website lacks centralized, easily searchable, and user-friendly academic content. Its user interface is scattered and mobile-unfriendly, making navigation highly difficult for student mobile users. Additionally, students struggle to map out curriculum dependency structures, leading to delayed graduation due to missed prerequisite dependencies. Furthermore, students and advisors find it tedious to navigate long PDF handbooks to locate specific university policy rules, while university updates remain scattered across different social media pages.
+* **OBJECTIVE:** To develop a mobile-responsive, unified academic portal that centralizes university resources, models curriculum paths as Directed Acyclic Graphs (DAGs) to run topological pathfinding, hosts an offline-capable RAG chatbot for semantic policy queries, and automates event aggregation from social channels.
+* **METHODOLOGY OR HOW TO SOLVE THE PROBLEM:**
+    * **Graph-Theoretic Curricular Modeling:** Represent multi-campus curricula as Directed Acyclic Graphs (DAGs). Implement cycle-detection algorithms (e.g., Tarjan's or DFS) to identify invalid prerequisite loops. Develop an A*/Dijkstra-based pathfinding engine that generates alternative semester-by-semester roadmaps for students when courses are failed or unavailable.
+    * **Local Retrieval-Augmented Generation (RAG):** Construct a local semantic Q&A chatbot using a sentence-transformer embedding model (e.g., `all-MiniLM-L6-v2`) and HNSW vector indexing. Load the official student handbook and academic documents, enabling instant question-answering with exact source references.
+    * **Information Extraction & Deduplication Pipeline:** Set up an automated social media scraper targeting official MMSU Facebook pages. Implement a classification pipeline (using Naive Bayes or SVM models) to categorize posts (e.g., enrollment dates, room changes, suspensions) and apply Locality-Sensitive Hashing (LSH) to filter duplicate announcements.
+* **SGD COVERED:** SDG 4: Quality Education (Sub-target: Technology-Enhanced Learning Environments & Equitable Information Access) & SDG 9: Industry, Innovation, and Infrastructure.
+* **EXPECTED OUTPUT:** A mobile-first Progressive Web Application (PWA) featuring an interactive graph-based curriculum pathfinder, a client-side vector-based policy consulting chatbot, and a unified, categorized event notification feed.
